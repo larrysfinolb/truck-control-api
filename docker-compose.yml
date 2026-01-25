@@ -1,7 +1,7 @@
 services:
   truck-control-db:
     container_name: truck-control-database
-    image: postgres:18-alpine
+    image: postgres:17
     restart: always
     volumes:
       - ./postgres:/var/lib/postgresql/data
