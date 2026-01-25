@@ -30,7 +30,7 @@ model Deliveries {
   destination String   @map("destination")
 
   rate       Decimal? @map("rate") @db.Decimal(12, 4)
-  carrierFee Decimal? @map("carrier_fee") @db.Decimal(12, 4)
+  carrierFee Decimal? @map("carrier_fee") @db.Decimal(5, 4)
 
   miles               Decimal? @map("miles") @db.Decimal(12, 4)
   ratePerMile         Decimal? @map("rate_per_mile") @db.Decimal(12, 4)
