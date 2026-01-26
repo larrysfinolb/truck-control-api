@@ -13,11 +13,13 @@ import { DeliveriesService } from './deliveries.service.js';
 import { CreateDeliveryDto } from './dto/create-delivery.dto.js';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto.js';
 import { FindDeliveriesDto } from './dto/find-deliveries.dto.js';
+import { Auth } from '../auth/decorators/auth.decorator.js';
 
 @Controller({
   path: 'deliveries',
   version: '1',
 })
+@Auth()
 export class DeliveriesController {
   constructor(private readonly deliveriesService: DeliveriesService) {}
 
