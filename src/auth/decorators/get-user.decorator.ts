@@ -3,15 +3,15 @@ import {
   ExecutionContext,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { Users } from 'generated/prisma/browser.js';
+import { User } from 'generated/prisma/browser.js';
 
 export const GetUser = createParamDecorator(
   (
-    data: keyof Users | undefined,
+    data: keyof User | undefined,
     ctx: ExecutionContext,
-  ): Users | Users[keyof Users] => {
+  ): User | User[keyof User] => {
     const request = ctx.switchToHttp().getRequest();
-    const user: Users = request.user;
+    const user: User = request.user;
 
     if (!user) {
       throw new InternalServerErrorException('User not found in request');

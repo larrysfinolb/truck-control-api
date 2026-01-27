@@ -1,18 +1,18 @@
 import { DeliveryType, Prisma } from '../../../generated/prisma/client.js';
 import { BaseCriteria } from '../../common/criteria/base.criteria.js';
 
-export class ActiveDeliveryCriteria extends BaseCriteria<Prisma.DeliveriesWhereInput> {
-  apply(): Prisma.DeliveriesWhereInput {
+export class ActiveDeliveryCriteria extends BaseCriteria<Prisma.DeliveryWhereInput> {
+  apply(): Prisma.DeliveryWhereInput {
     return { deletedAt: null };
   }
 }
 
-export class DeliveryTypeCriteria extends BaseCriteria<Prisma.DeliveriesWhereInput> {
+export class DeliveryTypeCriteria extends BaseCriteria<Prisma.DeliveryWhereInput> {
   constructor(private readonly type?: DeliveryType) {
     super();
   }
 
-  apply(): Prisma.DeliveriesWhereInput {
+  apply(): Prisma.DeliveryWhereInput {
     if (!this.type) {
       return {};
     }

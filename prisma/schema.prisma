@@ -18,8 +18,12 @@ enum DeliveryType {
   MILEAGE_BASED
 }
 
-model Deliveries {
-  id   String       @id @default(uuid())
+model Delivery {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
   type DeliveryType
 
   vehicle String @map("vehicle")
@@ -44,8 +48,11 @@ model Deliveries {
   @@map("deliveries")
 }
 
-model Users {
-  id        String @id @default(uuid())
+model User {
+  id String @id @default(uuid())
+
+  deliveries Delivery[]
+
   email     String @unique
   password  String
   firstName String @map("first_name")

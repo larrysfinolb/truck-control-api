@@ -14,6 +14,8 @@ import { CreateDeliveryDto } from './dto/create-delivery.dto.js';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto.js';
 import { FindDeliveriesDto } from './dto/find-deliveries.dto.js';
 import { Auth } from '../auth/decorators/auth.decorator.js';
+import { GetUser } from '../auth/decorators/get-user.decorator.js';
+import type { User } from '../../generated/prisma/client.js';
 
 @Controller({
   path: 'deliveries',
@@ -24,8 +26,8 @@ export class DeliveriesController {
   constructor(private readonly deliveriesService: DeliveriesService) {}
 
   @Post()
-  create(@Body() createDeliveryDto: CreateDeliveryDto) {
-    return this.deliveriesService.create(createDeliveryDto);
+  create(@Body() createDeliveryDto: CreateDeliveryDto, @GetUser() user: User) {
+    return this.deliveriesService.create(createDeliveryDto, user);
   }
 
   @Get()

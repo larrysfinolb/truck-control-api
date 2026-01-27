@@ -20,7 +20,7 @@ export class AuthService {
   async login(loginDto: LoginDto) {
     const { email, password } = loginDto;
 
-    const user = await this.prisma.users.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: { email },
     });
     if (!user) {
@@ -44,7 +44,7 @@ export class AuthService {
   async signup(signupDto: SignupDto) {
     const { firstName, lastName, email, password } = signupDto;
 
-    const user = await this.prisma.users.findFirst({
+    const user = await this.prisma.user.findFirst({
       where: { email },
     });
 
@@ -52,7 +52,7 @@ export class AuthService {
       throw new ConflictException('Email already in use');
     }
 
-    const newUser = await this.prisma.users.create({
+    const newUser = await this.prisma.user.create({
       data: {
         firstName,
         lastName,

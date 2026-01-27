@@ -3,7 +3,7 @@ import { CreateDeliveryDto } from './dto/create-delivery.dto.js';
 import { UpdateDeliveryDto } from './dto/update-delivery.dto.js';
 import { PrismaService } from '../prisma.service.js';
 import { Page } from '../common/interfaces/page.interface.js';
-import { Deliveries, Prisma } from '../../generated/prisma/client.js';
+import { Delivery, Prisma, User } from '../../generated/prisma/client.js';
 import {
   ActiveDeliveryCriteria,
   DeliveryTypeCriteria,
@@ -15,28 +15,29 @@ import { CriteriaBuilder } from '../common/criteria/builder.criteria.js';
 export class DeliveriesService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createDeliveryDto: CreateDeliveryDto) {
-    return await this.prisma.deliveries.create({
-      data: createDeliveryDto,
+  async create(createDeliveryDto: CreateDeliveryDto, user: User) {
+    return await this.prisma.delivery.create({
+      data: {
+        ...createDeliveryDto,
+        userId: user.id,
+      },
     });
   }
 
-  async findAll(
-    findDeliveriesDto: FindDeliveriesDto,
-  ): Promise<Page<Deliveries>> {
-    const where = new CriteriaBuilder<Prisma.DeliveriesWhereInput>()
+  async findAll(findDeliveriesDto: FindDeliveriesDto): Promise<Page<Delivery>> {
+    const where = new CriteriaBuilder<Prisma.DeliveryWhereInput>()
       .add(new ActiveDeliveryCriteria())
       .add(new DeliveryTypeCriteria(findDeliveriesDto.type))
       .build();
 
     const [data, total] = await Promise.all([
-      this.prisma.deliveries.findMany({
+      this.prisma.delivery.findMany({
         skip: findDeliveriesDto.skip,
         take: findDeliveriesDto.limit,
         where,
         orderBy: { createdAt: 'desc' },
       }),
-      this.prisma.deliveries.count({ where }),
+      this.prisma.delivery.count({ where }),
     ]);
 
     const lastPage = Math.ceil(total / (findDeliveriesDto.limit ?? 10));
@@ -55,7 +56,7 @@ export class DeliveriesService {
   }
 
   async findOne(id: string) {
-    const delivery = await this.prisma.deliveries.findFirst({
+    const delivery = await this.prisma.delivery.findFirst({
       where: { id, deletedAt: null },
     });
 
@@ -67,7 +68,7 @@ export class DeliveriesService {
   }
 
   async update(id: string, updateDeliveryDto: UpdateDeliveryDto) {
-    const delivery = await this.prisma.deliveries.findFirst({
+    const delivery = await this.prisma.delivery.findFirst({
       where: { id, deletedAt: null },
     });
 
@@ -75,14 +76,14 @@ export class DeliveriesService {
       throw new NotFoundException(`Delivery with ID ${id} not found`);
     }
 
-    return await this.prisma.deliveries.update({
+    return await this.prisma.delivery.update({
       where: { id },
       data: updateDeliveryDto,
     });
   }
 
   async remove(id: string) {
-    const delivery = await this.prisma.deliveries.findFirst({
+    const delivery = await this.prisma.delivery.findFirst({
       where: { id, deletedAt: null },
     });
 
@@ -90,7 +91,7 @@ export class DeliveriesService {
       throw new NotFoundException(`Delivery with ID ${id} not found`);
     }
 
-    const deletedDelivery = await this.prisma.$queryRaw<Deliveries[]>`
+    const deletedDelivery = await this.prisma.$queryRaw<Delivery[]>`
       UPDATE "deliveries"
       SET "deleted_at" = CURRENT_TIMESTAMP
       WHERE id = ${id}
