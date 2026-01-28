@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -9,6 +10,8 @@ import { SignupDto } from './dto/signup.dto.js';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from './interfaces/jwt-payload.interface.js';
 import { JwtService } from '@nestjs/jwt';
+import { BusinessException } from '../common/exceptions/business-exception.js';
+import { ExceptionCodes } from '../common/enums/exception-codes.js';
 
 @Injectable()
 export class AuthService {
@@ -24,12 +27,20 @@ export class AuthService {
       where: { email },
     });
     if (!user) {
-      throw new UnauthorizedException('Invalid email');
+      throw new BusinessException(
+        'User not found',
+        ExceptionCodes.USER_NOT_FOUND,
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid password');
+      throw new BusinessException(
+        'Invalid Password',
+        ExceptionCodes.INVALID_PASSWORD,
+        HttpStatus.UNAUTHORIZED,
+      );
     }
 
     const { password: _password, ...userWithoutPassword } = user;
@@ -49,7 +60,11 @@ export class AuthService {
     });
 
     if (user) {
-      throw new ConflictException('Email already in use');
+      throw new BusinessException(
+        'Email already in use',
+        ExceptionCodes.EMAIL_ALREADY_IN_USE,
+        HttpStatus.CONFLICT,
+      );
     }
 
     const newUser = await this.prisma.user.create({
