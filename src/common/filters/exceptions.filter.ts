@@ -19,10 +19,6 @@ export class ExceptionsFilter implements ExceptionFilter {
 
     let status: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     let message: string | string[] = 'Internal server error';
-    const rawMessage =
-      exception instanceof Error
-        ? exception.message
-        : JSON.stringify(exception);
     let code: ExceptionCodes = ExceptionCodes.INTERNAL_SERVER_ERROR;
 
     if (exception instanceof HttpException) {
@@ -55,10 +51,9 @@ export class ExceptionsFilter implements ExceptionFilter {
       }
     }
 
+    const formatMessage = Array.isArray(message) ? message.join(', ') : message;
     this.logger.error(
-      `Status: ${status} | Code: ${code} | Message: ${
-        Array.isArray(message) ? message.join(', ') : message
-      } | Raw Message: ${rawMessage}`,
+      `Status: ${status} | Code: ${code} | Message: ${formatMessage}`,
     );
 
     const errorBody = {
