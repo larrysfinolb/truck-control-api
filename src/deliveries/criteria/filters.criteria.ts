@@ -20,3 +20,13 @@ export class DeliveryTypeCriteria extends BaseCriteria<Prisma.DeliveryWhereInput
     return { type: this.type };
   }
 }
+
+export class DeliveryOwnerCriteria extends BaseCriteria<Prisma.DeliveryWhereInput> {
+  constructor(private readonly userId: string) {
+    super();
+  }
+
+  apply(): Prisma.DeliveryWhereInput {
+    return { userId: this.userId };
+  }
+}

@@ -6,6 +6,7 @@ import { Page } from '../common/interfaces/page.interface.js';
 import { Delivery, Prisma, User } from '../../generated/prisma/client.js';
 import {
   ActiveDeliveryCriteria,
+  DeliveryOwnerCriteria,
   DeliveryTypeCriteria,
 } from './criteria/filters.criteria.js';
 import { FindDeliveriesDto } from './dto/find-deliveries.dto.js';
@@ -24,10 +25,14 @@ export class DeliveriesService {
     });
   }
 
-  async findAll(findDeliveriesDto: FindDeliveriesDto): Promise<Page<Delivery>> {
+  async findAll(
+    findDeliveriesDto: FindDeliveriesDto,
+    user: User,
+  ): Promise<Page<Delivery>> {
     const where = new CriteriaBuilder<Prisma.DeliveryWhereInput>()
       .add(new ActiveDeliveryCriteria())
       .add(new DeliveryTypeCriteria(findDeliveriesDto.type))
+      .add(new DeliveryOwnerCriteria(user.id))
       .build();
 
     const [data, total] = await Promise.all([

@@ -31,8 +31,11 @@ export class DeliveriesController {
   }
 
   @Get()
-  findAll(@Query() findDeliveriesDto: FindDeliveriesDto) {
-    return this.deliveriesService.findAll(findDeliveriesDto);
+  findAll(
+    @Query() findDeliveriesDto: FindDeliveriesDto,
+    @GetUser() user: User,
+  ) {
+    return this.deliveriesService.findAll(findDeliveriesDto, user);
   }
 
   @Get(':id')
