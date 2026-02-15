@@ -17,11 +17,12 @@ export class ExceptionsFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
 
+    const isHttpException: boolean = exception instanceof HttpException;
     let status: HttpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-    let message: string | string[] = 'Internal server error';
+    let message: string | string[] = exception.message;
     let code: ExceptionCodes = ExceptionCodes.INTERNAL_SERVER_ERROR;
 
-    if (exception instanceof HttpException) {
+    if (isHttpException) {
       status = exception.getStatus();
 
       const errorResponse = exception.getResponse();
@@ -59,7 +60,7 @@ export class ExceptionsFilter implements ExceptionFilter {
     const errorBody = {
       statusCode: status,
       errorCode: code,
-      message,
+      message: isHttpException ? formatMessage : 'Internal server error',
       timestamp: new Date().toISOString(),
       path: request.url,
     };
