@@ -29,8 +29,29 @@ model User {
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
   expenses  Expense[]
+  trucks    Truck[]
 
   @@map("users")
+}
+
+model Truck {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  make         String @map("make")
+  model        String @map("model")
+  year         Int    @map("year")
+  color        String @map("color")
+  licensePlate String @map("license_plate")
+  vin          String @map("vin")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("trucks")
 }
 
 enum DeliveryType {
