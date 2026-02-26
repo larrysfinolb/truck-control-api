@@ -30,6 +30,7 @@ model User {
   deletedAt DateTime? @map("deleted_at")
   expenses  Expense[]
   trucks    Truck[]
+  drivers   Driver[]
 
   @@map("users")
 }
@@ -52,6 +53,23 @@ model Truck {
   deletedAt DateTime? @map("deleted_at")
 
   @@map("trucks")
+}
+
+model Driver {
+  id String @id @default(uuid())
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+
+  firstName   String @map("first_name")
+  lastName    String @map("last_name")
+  phoneNumber String @map("phone_number")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("drivers")
 }
 
 enum DeliveryType {
