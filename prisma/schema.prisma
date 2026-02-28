@@ -99,6 +99,7 @@ model Delivery {
   ratePerMile         Decimal? @map("rate_per_mile") @db.Decimal(12, 4)
   deadheadMiles       Decimal? @map("deadhead_miles") @db.Decimal(12, 4)
   ratePerDeadheadMile Decimal? @map("rate_per_deadhead_mile") @db.Decimal(12, 4)
+  totalPayment        Decimal? @map("total_payment") @db.Decimal(12, 4)
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")

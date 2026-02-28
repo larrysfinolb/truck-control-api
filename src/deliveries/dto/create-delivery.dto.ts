@@ -69,4 +69,10 @@ export class CreateDeliveryDto {
   @Type(() => Number)
   @Min(0)
   ratePerDeadheadMile: number;
+
+  @ValidateIf((o) => o.type === DeliveryType.MILEAGE_BASED)
+  @IsNumber()
+  @Type(() => Number)
+  @Min(0)
+  totalPayment: number;
 }
