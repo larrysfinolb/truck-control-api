@@ -16,11 +16,11 @@ export class CreateDeliveryDto {
 
   @IsString()
   @IsNotEmpty()
-  vehicle: string;
+  vehicleId: string;
 
   @IsString()
   @IsNotEmpty()
-  driver: string;
+  driverId: string;
 
   @IsDate()
   @Type(() => Date)

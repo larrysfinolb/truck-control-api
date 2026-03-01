@@ -48,9 +48,10 @@ model Truck {
   licensePlate String @map("license_plate")
   vin          String @map("vin")
 
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  deletedAt  DateTime?  @map("deleted_at")
+  deliveries Delivery[]
 
   @@map("trucks")
 }
@@ -65,9 +66,10 @@ model Driver {
   lastName    String @map("last_name")
   phoneNumber String @map("phone_number")
 
-  createdAt DateTime  @default(now()) @map("created_at")
-  updatedAt DateTime  @updatedAt @map("updated_at")
-  deletedAt DateTime? @map("deleted_at")
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  deletedAt  DateTime?  @map("deleted_at")
+  deliveries Delivery[]
 
   @@map("drivers")
 }
@@ -85,8 +87,11 @@ model Delivery {
 
   type DeliveryType
 
-  vehicle String @map("vehicle")
-  driver  String @map("driver")
+  vehicle   Truck  @relation(fields: [vehicleId], references: [id])
+  vehicleId String @map("vehicle_id")
+
+  driver   Driver @relation(fields: [driverId], references: [id])
+  driverId String @map("driver_id")
 
   pickupDate  DateTime @map("pickup_date")
   origin      String   @map("origin")

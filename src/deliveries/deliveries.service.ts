@@ -37,6 +37,10 @@ export class DeliveriesService {
 
     const [data, total] = await Promise.all([
       this.prisma.delivery.findMany({
+        include: {
+          driver: true,
+          vehicle: true,
+        },
         skip: findDeliveriesDto.skip,
         take: findDeliveriesDto.limit,
         where,
@@ -84,6 +88,10 @@ export class DeliveriesService {
     return await this.prisma.delivery.update({
       where: { id },
       data: updateDeliveryDto,
+      include: {
+        driver: true,
+        vehicle: true,
+      },
     });
   }
 
