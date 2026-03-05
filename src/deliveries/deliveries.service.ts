@@ -66,6 +66,10 @@ export class DeliveriesService {
 
   async findOne(id: string) {
     const delivery = await this.prisma.delivery.findFirst({
+      include: {
+        driver: true,
+        vehicle: true,
+      },
       where: { id, deletedAt: null },
     });
 
