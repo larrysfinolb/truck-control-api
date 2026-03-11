@@ -99,6 +99,7 @@ model Delivery {
 
   rate       Decimal? @map("rate") @db.Decimal(12, 4)
   carrierFee Decimal? @map("carrier_fee") @db.Decimal(5, 4)
+  totalRate  Decimal? @map("total_rate") @db.Decimal(12, 4)
 
   miles               Decimal? @map("miles") @db.Decimal(12, 4)
   ratePerMile         Decimal? @map("rate_per_mile") @db.Decimal(12, 4)

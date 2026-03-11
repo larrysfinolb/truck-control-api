@@ -46,6 +46,12 @@ export class CreateDeliveryDto {
   @Min(0)
   carrierFee: number;
 
+  @ValidateIf((o) => o.type === DeliveryType.FIXED_RATE)
+  @IsNumber()
+  @Type(() => Number)
+  @Min(0)
+  totalRate: number;
+
   @ValidateIf((o) => o.type === DeliveryType.MILEAGE_BASED)
   @IsNumber()
   @Type(() => Number)
