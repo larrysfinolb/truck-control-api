@@ -40,6 +40,7 @@ export class DeliveriesService {
         include: {
           driver: true,
           vehicle: true,
+          expenses: true,
         },
         skip: findDeliveriesDto.skip,
         take: findDeliveriesDto.limit,
@@ -69,6 +70,7 @@ export class DeliveriesService {
       include: {
         driver: true,
         vehicle: true,
+        expenses: true,
       },
       where: { id, deletedAt: null },
     });

@@ -17,7 +17,7 @@ import type { User } from '../../generated/prisma/client.js';
 import { GetUser } from '../auth/decorators/get-user.decorator.js';
 import { FindExpensesDto } from './dto/find-expenses.dto.js';
 
-@Controller({ path: 'expenses', version: '1' })
+@Controller({ path: 'deliveries/expenses', version: '1' })
 @Auth()
 export class ExpensesController {
   constructor(private readonly expensesService: ExpensesService) {}

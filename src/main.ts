@@ -4,6 +4,7 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { envs } from './config/envs.js';
 import { ExceptionsFilter } from './common/filters/exceptions.filter.js';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor.js';
+import { DecimalInterceptor } from './common/interceptors/decimal.interceptor.js';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +23,7 @@ async function bootstrap() {
   app.useGlobalFilters(new ExceptionsFilter());
 
   app.useGlobalInterceptors(new ResponseInterceptor());
+  app.useGlobalInterceptors(new DecimalInterceptor());
 
   app.setGlobalPrefix('api');
 
