@@ -16,6 +16,7 @@ import { FindDeliveriesDto } from './dto/find-deliveries.dto.js';
 import { Auth } from '../auth/decorators/auth.decorator.js';
 import { GetUser } from '../auth/decorators/get-user.decorator.js';
 import type { User } from '../../generated/prisma/client.js';
+import { SoftDeleteTripUseCase } from './use-cases/soft-delete-trip.use-case.js';
 
 @Controller({
   path: 'deliveries',
@@ -23,7 +24,10 @@ import type { User } from '../../generated/prisma/client.js';
 })
 @Auth()
 export class DeliveriesController {
-  constructor(private readonly deliveriesService: DeliveriesService) {}
+  constructor(
+    private readonly deliveriesService: DeliveriesService,
+    private readonly softDeleteTripUseCase: SoftDeleteTripUseCase,
+  ) {}
 
   @Post()
   create(@Body() createDeliveryDto: CreateDeliveryDto, @GetUser() user: User) {
@@ -52,7 +56,7 @@ export class DeliveriesController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.deliveriesService.remove(id);
+  remove(@Param('id', ParseUUIDPipe) id: string, @GetUser() user: User) {
+    return this.softDeleteTripUseCase.execute(id, user);
   }
 }
