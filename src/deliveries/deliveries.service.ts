@@ -11,15 +11,20 @@ import {
 } from './criteria/filters.criteria.js';
 import { FindDeliveriesDto } from './dto/find-deliveries.dto.js';
 import { CriteriaBuilder } from '../common/criteria/builder.criteria.js';
+import { calculateTotalRate } from './helpers/calculateTotalRate.js';
 
 @Injectable()
 export class DeliveriesService {
   constructor(private prisma: PrismaService) {}
 
   async create(createDeliveryDto: CreateDeliveryDto, user: User) {
+    const { rate, carrierFee } = createDeliveryDto;
+    const totalRate = calculateTotalRate(rate, carrierFee);
+
     return await this.prisma.delivery.create({
       data: {
         ...createDeliveryDto,
+        totalRate,
         userId: user.id,
       },
     });
