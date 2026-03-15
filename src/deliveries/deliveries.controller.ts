@@ -17,6 +17,7 @@ import { Auth } from '../auth/decorators/auth.decorator.js';
 import { GetUser } from '../auth/decorators/get-user.decorator.js';
 import type { User } from '../../generated/prisma/client.js';
 import { SoftDeleteTripUseCase } from './use-cases/soft-delete-trip.use-case.js';
+import { FindAllTripsUseCase } from './use-cases/find-all-trips.use-case.js';
 
 @Controller({
   path: 'deliveries',
@@ -26,6 +27,7 @@ import { SoftDeleteTripUseCase } from './use-cases/soft-delete-trip.use-case.js'
 export class DeliveriesController {
   constructor(
     private readonly deliveriesService: DeliveriesService,
+    private readonly findAllTripsUseCase: FindAllTripsUseCase,
     private readonly softDeleteTripUseCase: SoftDeleteTripUseCase,
   ) {}
 
@@ -39,7 +41,7 @@ export class DeliveriesController {
     @Query() findDeliveriesDto: FindDeliveriesDto,
     @GetUser() user: User,
   ) {
-    return this.deliveriesService.findAll(findDeliveriesDto, user);
+    return this.findAllTripsUseCase.execute(findDeliveriesDto, user);
   }
 
   @Get(':id')
