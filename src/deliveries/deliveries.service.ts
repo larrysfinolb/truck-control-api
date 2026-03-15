@@ -105,29 +105,4 @@ export class DeliveriesService {
       },
     });
   }
-
-  async remove(id: string) {
-    const delivery = await this.prisma.delivery.findFirst({
-      where: { id, deletedAt: null },
-    });
-
-    if (!delivery) {
-      throw new NotFoundException(`Delivery with ID ${id} not found`);
-    }
-
-    const deletedDelivery = await this.prisma.$queryRaw<Delivery[]>`
-      UPDATE "deliveries"
-      SET "deleted_at" = CURRENT_TIMESTAMP
-      WHERE id = ${id}
-      RETURNING *;
-    `;
-
-    if (!deletedDelivery || deletedDelivery.length === 0) {
-      throw new NotFoundException(
-        `Delivery with ID ${id} could not be deleted or was not found`,
-      );
-    }
-
-    return deletedDelivery[0];
-  }
 }
