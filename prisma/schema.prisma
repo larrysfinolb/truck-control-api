@@ -16,7 +16,7 @@ datasource db {
 model User {
   id String @id @default(uuid())
 
-  deliveries Delivery[]
+  trips Trip[]
 
   email     String @unique
   password  String
@@ -51,7 +51,7 @@ model Truck {
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
   deletedAt  DateTime?  @map("deleted_at")
-  deliveries Delivery[]
+  trips      Trip[]
 
   @@map("trucks")
 }
@@ -69,23 +69,23 @@ model Driver {
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
   deletedAt  DateTime?  @map("deleted_at")
-  deliveries Delivery[]
+  trips      Trip[]
 
   @@map("drivers")
 }
 
-enum DeliveryType {
+enum TripType {
   FIXED_RATE
-  MILEAGE_BASED
+  PER_MILE
 }
 
-model Delivery {
+model Trip {
   id String @id @default(uuid())
 
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
 
-  type DeliveryType
+  type TripType
 
   vehicle   Truck  @relation(fields: [vehicleId], references: [id])
   vehicleId String @map("vehicle_id")
@@ -99,7 +99,6 @@ model Delivery {
 
   rate       Decimal? @map("rate") @db.Decimal(12, 4)
   carrierFee Decimal? @map("carrier_fee") @db.Decimal(5, 4)
-  totalRate  Decimal? @map("total_rate") @db.Decimal(12, 4)
 
   miles               Decimal? @map("miles") @db.Decimal(12, 4)
   ratePerMile         Decimal? @map("rate_per_mile") @db.Decimal(12, 4)
@@ -112,7 +111,7 @@ model Delivery {
   deletedAt DateTime? @map("deleted_at")
   expenses  Expense[]
 
-  @@map("deliveries")
+  @@map("trips")
 }
 
 enum ExpenseCategory {
@@ -129,8 +128,8 @@ model Expense {
   user   User   @relation(fields: [userId], references: [id])
   userId String @map("user_id")
 
-  delivery   Delivery? @relation(fields: [deliveryId], references: [id])
-  deliveryId String?   @map("delivery_id")
+  trip   Trip?   @relation(fields: [tripId], references: [id])
+  tripId String? @map("trip_id")
 
   category ExpenseCategory
 

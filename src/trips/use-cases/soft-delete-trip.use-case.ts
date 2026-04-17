@@ -1,5 +1,5 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { User, Delivery } from '../../../generated/prisma/client.js';
+import { User, Trip } from '../../../generated/prisma/client.js';
 import { ExceptionCodes } from '../../common/enums/exception-codes.js';
 import { BusinessException } from '../../common/exceptions/business-exception.js';
 import { PrismaService } from '../../prisma.service.js';
@@ -10,7 +10,7 @@ export class SoftDeleteTripUseCase {
 
   async execute(tripId: string, userId: User) {
     return await this.prisma.$transaction(async (tx) => {
-      const trip = await tx.delivery.findUnique({
+      const trip = await tx.trip.findUnique({
         where: { id: tripId, userId: userId.id, deletedAt: null },
       });
 
@@ -22,8 +22,8 @@ export class SoftDeleteTripUseCase {
         );
       }
 
-      const updatedTrips = await tx.$queryRaw<Delivery[]>`
-        UPDATE "deliveries"
+      const updatedTrips = await tx.$queryRaw<Trip[]>`
+        UPDATE "trips"
         SET "deleted_at" = NOW()
         WHERE id = ${tripId}
         RETURNING *
@@ -34,7 +34,7 @@ export class SoftDeleteTripUseCase {
       await tx.$queryRaw`
         UPDATE "expenses"
         SET "deleted_at" = NOW()
-        WHERE "delivery_id" = ${deletedTrip.id}
+        WHERE "trip_id" = ${deletedTrip.id}
           AND "deleted_at" IS NULL
       `;
 

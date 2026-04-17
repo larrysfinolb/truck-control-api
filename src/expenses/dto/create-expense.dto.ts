@@ -13,18 +13,18 @@ import { ExpenseCategory } from '../../../generated/prisma/enums.js';
 export class CreateExpenseDto {
   @IsString()
   @IsNotEmpty()
-  deliveryId: string;
+  tripId!: string;
 
   @IsEnum(ExpenseCategory)
-  category: ExpenseCategory;
+  category!: ExpenseCategory;
 
   @IsDate()
   @Type(() => Date)
-  incurredAt: Date;
+  incurredAt!: Date;
 
   @IsNumber()
   @IsPositive()
-  amount: number;
+  amount!: number;
 
   @IsString()
   @IsOptional()

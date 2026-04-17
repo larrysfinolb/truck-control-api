@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DeliveriesModule } from './deliveries/deliveries.module.js';
+import { TripsModule } from './trips/trips.module.js';
 import { CommonModule } from './common/common.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { ExpensesModule } from './expenses/expenses.module.js';
@@ -9,7 +9,7 @@ import { DriversModule } from './drivers/drivers.module.js';
 
 @Module({
   imports: [
-    DeliveriesModule,
+    TripsModule,
     CommonModule,
     AuthModule,
     ExpensesModule,

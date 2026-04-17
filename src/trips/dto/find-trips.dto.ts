@@ -1,11 +1,11 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { DeliveryType } from '../../../generated/prisma/enums.js';
+import { TripType } from '../../../generated/prisma/enums.js';
 import { PaginationDto } from '../../common/dto/pagination.dto.js';
 
-export class FindDeliveriesDto extends PaginationDto {
+export class FindTripsDto extends PaginationDto {
   @IsOptional()
-  @IsEnum(DeliveryType)
-  type?: DeliveryType;
+  @IsEnum(TripType)
+  type?: TripType;
 
   @IsOptional()
   @IsString()

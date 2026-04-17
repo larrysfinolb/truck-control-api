@@ -1,12 +1,12 @@
-import { BaseCriteria } from '../../common/criteria/base.criteria.js';
 import { Prisma } from '../../../generated/prisma/client.js';
+import { BaseCriteria } from '../../common/criteria/base.criteria.js';
 
-export class TripSearchCriteria extends BaseCriteria<Prisma.DeliveryWhereInput> {
+export class TripSearchCriteria extends BaseCriteria<Prisma.TripWhereInput> {
   constructor(private readonly searchTerm?: string) {
     super();
   }
 
-  apply(): Prisma.DeliveryWhereInput {
+  apply(): Prisma.TripWhereInput {
     if (!this.searchTerm) {
       return {};
     }
@@ -25,7 +25,6 @@ export class TripSearchCriteria extends BaseCriteria<Prisma.DeliveryWhereInput> 
             model: { contains: this.searchTerm, mode: 'insensitive' },
           },
         },
-
         {
           driver: {
             firstName: { contains: this.searchTerm, mode: 'insensitive' },
